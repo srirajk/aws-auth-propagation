@@ -1,0 +1,6 @@
+bedrock-agentcore
+langchain>=0.2.0
+langchain-aws
+langgraph
+mcp>=1.0.0
+langchain-mcp-adapters

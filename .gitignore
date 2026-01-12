@@ -1,0 +1,56 @@
+# macOS
+.DS_Store
+
+# Archives
+*.zip
+*.ZIP
+
+# Claude
+.claude/
+
+# IntelliJ / JetBrains
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# VS Code
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+pip-wheel-metadata/
+pip-log.txt
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+dist/
+build/
+*.egg-info/
+.eggs/
+*.egg
+.coverage
+htmlcov/
+
+# Java / Build outputs
+target/
+build/
+*.class
+*.jar
+*.war
+*.ear
+
+# Misc
+*.log
+*.tmp
