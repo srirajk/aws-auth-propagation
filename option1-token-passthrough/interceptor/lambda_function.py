@@ -96,16 +96,19 @@ def lambda_handler(event: dict, context) -> dict:
             tool_name = request_body.get("params", {}).get("name", "unknown")
             logger.info(f"Tool being called: {tool_name}")
     
-    # Extract user token (try multiple case variations)
+    # Extract user token (try multiple case variations for robustness)
+    # This header was sent by the agent's MCP client (see agent_code.py line 67)
     user_token = (
         request_headers.get(INCOMING_TOKEN_HEADER) or
         request_headers.get(INCOMING_TOKEN_HEADER.lower()) or
         request_headers.get("x-custom-usertoken")
     )
-    
+
     if not user_token:
         logger.warning(f"No user token found in header: {INCOMING_TOKEN_HEADER}")
         logger.warning(f"Available headers: {list(request_headers.keys())}")
+        logger.warning("HINT: Ensure Gateway has passRequestHeaders=true in interceptor config!")
+        # Return unmodified request if no token found
         return {
             "interceptorOutputVersion": "1.0",
             "mcp": {
