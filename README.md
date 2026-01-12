@@ -14,16 +14,13 @@ This repository contains different authentication propagation patterns for AWS B
 | **IAM Trust Chain** | 3-hop | 5-hop |
 | **Complexity** | Simple | More complex |
 
-## Options
+---
 
-### [Option 1: Token Passthrough](option1-token-passthrough/)
+## Option 1: Token Passthrough
+
 End-user identity propagation - the user's Okta JWT token flows end-to-end from Streamlit through AgentCore to the Target API.
 
-```
-Streamlit → Runtime → Gateway → Interceptor → Target API
-    │          │          │          │            │
- Okta JWT → Custom Hdr → MCP Hdr → Auth Hdr → Validated
-```
+![Option 1: Token Passthrough Architecture](images/option1-architecture.png)
 
 **When to use:**
 - User identity must be preserved at target
@@ -31,19 +28,15 @@ Streamlit → Runtime → Gateway → Interceptor → Target API
 - No cross-account secrets needed
 - Simple architecture preferred
 
-### [Option 2: Token Broker](option2-token-broker/) *(Planned)*
+📁 **Implementation:** [option1-token-passthrough/](option1-token-passthrough/)
+
+---
+
+## Option 2: Token Broker
+
 Centralized credential retrieval - the interceptor calls a Token Broker service in a central account to get service account credentials.
 
-```
-Workload Account                    Central Account
-─────────────────                   ───────────────
-Streamlit → Runtime → Gateway       Token Broker → Secrets Manager
-                         │               │
-                   Interceptor ─────────►│
-                         │               │
-                         ▼               │
-                    Target API ◄─── Service Token
-```
+![Option 2: Token Broker Architecture](images/option2-architecture.png)
 
 **When to use:**
 - Cross-account secrets required
@@ -51,10 +44,17 @@ Streamlit → Runtime → Gateway       Token Broker → Secrets Manager
 - Centralized credential rotation
 - User identity NOT needed at target
 
+📁 **Documentation:** [option2-token-broker/](option2-token-broker/) *(Planned)*
+
+---
+
 ## Directory Structure
 
 ```
 auth-propagation/
+├── images/
+│   ├── option1-architecture.png
+│   └── option2-architecture.png
 ├── option1-token-passthrough/    # ✅ Implemented
 │   ├── streamlit/                # Frontend (boto3 header injection)
 │   ├── agent/                    # AgentCore Runtime agent
